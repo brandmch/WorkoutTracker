@@ -1,11 +1,13 @@
 package com.example.workouttrackerv5.Calendar.Adapters;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerv5.Calendar.MainDatabaseHelper_Calendar;
@@ -32,6 +34,7 @@ public class Adapter_CalendarItem extends RecyclerView.Adapter<Adapter_CalendarI
         return new ViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String name = workoutMuscleGroups.get(position);
@@ -47,7 +50,7 @@ public class Adapter_CalendarItem extends RecyclerView.Adapter<Adapter_CalendarI
         return workoutMuscleGroups.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -1,5 +1,7 @@
 package com.example.workouttrackerv5.Calendar;
 
+import androidx.annotation.NonNull;
+
 public class Day {
 
     int dayCode;
@@ -13,6 +15,7 @@ public class Day {
     }
 
     // ToString
+    @NonNull
     @Override
     public String toString() {
         return "Day{" +
@@ -34,6 +37,4 @@ public class Day {
     public void setWorkoutMuscleGroup(String workoutMuscleGroup) {
         this.workoutMuscleGroup = workoutMuscleGroup;
     }
-
-
 }

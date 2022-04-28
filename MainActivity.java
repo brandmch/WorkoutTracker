@@ -27,7 +27,6 @@ import com.example.workouttrackerv5.Workout.Workout_MainActivity;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.concurrent.locks.Lock;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity implements Adapter_Calendar.CalendarRVOnClickListener, Adapter_CalendarDesignateDayPopup.AddpOnClickListener{
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements Adapter_Calendar.
     int NEWDAYCODE;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -51,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements Adapter_Calendar.
         System.out.println(getDayCode(dateT));
 
         mdbh = new MainDatabaseHelper_Calendar(MainActivity.this);
+
+        // If first time on app, populate database with a few examples
         if (mdbh.getEverything().size() == 0){
             mdbh.addOne(new Day(getDayCode(dateT), "Chest"));
             mdbh.addOne(new Day(20220410, "Back"));
@@ -62,25 +62,18 @@ public class MainActivity extends AppCompatActivity implements Adapter_Calendar.
             mdbh.addOne(new Day(0, "Legs"));
         }
 
-
         setAdapter();
         System.out.println(dateT.getYear());
 
         Button btn_nextMonth = findViewById(R.id.btn_calendar_nextMonth);
         Button btn_lastMonth = findViewById(R.id.btn_calendar_lastMonth);
-        btn_nextMonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dateT = dateT.plusMonths(1);
-                setAdapter();
-            }
+        btn_nextMonth.setOnClickListener(view -> {
+            dateT = dateT.plusMonths(1);
+            setAdapter();
         });
-        btn_lastMonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dateT = dateT.minusMonths(1);
-                setAdapter();
-            }
+        btn_lastMonth.setOnClickListener(view -> {
+            dateT = dateT.minusMonths(1);
+            setAdapter();
         });
 
     }
@@ -94,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements Adapter_Calendar.
         Adapter_Calendar ac = new Adapter_Calendar(mdbh, this, getDayNumbersString(), String.valueOf(dateT.getMonth()), String.valueOf(dateT.getYear()), this);
         rv_calendar.setLayoutManager(layoutManager);
         rv_calendar.setAdapter(ac);
-
     }
+
     public ArrayList<String> getDayNumbersString(){
-        dayNumbers = new ArrayList<String>();
+        dayNumbers = new ArrayList<>();
 
         LocalDate firstOfMonth = dateT.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
@@ -122,15 +115,13 @@ public class MainActivity extends AppCompatActivity implements Adapter_Calendar.
                 dayNumbers.add(String.valueOf(i - dayOfWeek));
             }
         }
-
         return dayNumbers;
     }
+
     public int getDayCode(LocalDate localDate){
-        LocalDate datee = localDate;
         int x;
-        String a = String.valueOf(datee);
+        String a = String.valueOf(localDate);
         a = a.replace("-", "");
-        System.out.println("YOLO " + a);
         x = Integer.parseInt(a);
         return x;
     }
@@ -153,38 +144,30 @@ public class MainActivity extends AppCompatActivity implements Adapter_Calendar.
 
         dialog.show();
 
-        btn_done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("this is the btuton");
-                dialog.dismiss();
-                mdbh.addOne(new Day(NEWDAYCODE, NEWWORKOUTNAME));
-                setAdapter();
-                NEWDAYCODE = 0;
-                NEWWORKOUTNAME = "";
-            }
+        btn_done.setOnClickListener(view -> {
+            dialog.dismiss();
+            mdbh.addOne(new Day(NEWDAYCODE, NEWWORKOUTNAME));
+            setAdapter();
+            NEWDAYCODE = 0;
+            NEWWORKOUTNAME = "";
         });
-        btn_begin_workout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //dialog.dismiss();
-                Intent i = new Intent(MainActivity.this, Workout_MainActivity.class);
-                i.putExtra("dateT", getDayCode(dateT));
-                System.out.println("dateT in mainact = " + dateT);
-                dialog.dismiss();
-                startActivity(i);
-            }
+        btn_begin_workout.setOnClickListener(view -> {
+            Intent i = new Intent(MainActivity.this, Workout_MainActivity.class);
+            i.putExtra("dateT", getDayCode(dateT));
+            dialog.dismiss();
+            startActivity(i);
         });
     }
+
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater m = getMenuInflater();
         m.inflate(R.menu.menu, menu);
         return true;
     }
+
     public boolean onOptionsItemSelected(MenuItem i){
         switch (i.getItemId()) {
             case R.id.menu_item_add_workout_day:
-                System.out.println("shit has been clicked");
                 Intent p = new Intent(MainActivity.this, AddWorkout.class);
                 startActivity(p);
                 return true;
@@ -199,51 +182,15 @@ public class MainActivity extends AppCompatActivity implements Adapter_Calendar.
         if (Integer.parseInt(a) < 10) {
             a = "0" + a;
         }
-        System.out.println("day = " + a + " yearMonth = " + yearMonth);
         String b = String.valueOf(yearMonth).replace("-", "");
         String c = b + a;
-        System.out.println(c);
         dateT = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), Integer.parseInt(a));
         createDesignateDayPopup(Integer.parseInt(c));
     }
 
-
     @Override
     public void addpOnClickListener(String workoutName, int dayCode, int position) {
-        System.out.println("FUCK " + workoutName + " " + dayCode);
         NEWDAYCODE = dayCode;
         NEWWORKOUTNAME = workoutName;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,16 +17,16 @@ import java.util.ArrayList;
 
 public class Adapter_Calendar  extends RecyclerView.Adapter<Adapter_Calendar.ViewHolder> {
 
-    private LayoutInflater mlayoutInflater;
-    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
-    private CalendarRVOnClickListener calendarRVOnClickListener;
+    private final LayoutInflater mlayoutInflater;
+    private final RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private final CalendarRVOnClickListener calendarRVOnClickListener;
 
-    private ArrayList<String> dayNumbers;
+    private final ArrayList<String> dayNumbers;
 
-    private String monthName;
-    private String yearNumber;
+    private final String monthName;
+    private final String yearNumber;
 
-    private MainDatabaseHelper_Calendar mdbh;
+    private final MainDatabaseHelper_Calendar mdbh;
 
 
     public Adapter_Calendar(MainDatabaseHelper_Calendar mdbh, Context context, ArrayList<String> dayNumbers, String monthName, String yearNumber, CalendarRVOnClickListener calendarRVOnClickListener) {
@@ -70,7 +70,6 @@ public class Adapter_Calendar  extends RecyclerView.Adapter<Adapter_Calendar.Vie
         holder.rv.setLayoutManager(layoutManager);
         holder.rv.setAdapter(aci);
         holder.rv.setRecycledViewPool(viewPool);
-
     }
 
     @Override
@@ -78,7 +77,7 @@ public class Adapter_Calendar  extends RecyclerView.Adapter<Adapter_Calendar.Vie
         return dayNumbers.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tv;
         RecyclerView rv;
         CalendarRVOnClickListener calendarRVOnClickListener;

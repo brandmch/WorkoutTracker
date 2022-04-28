@@ -34,11 +34,7 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
     }
-                                                                                                    // IDS = 0
-                                                                                                    // DAYCODE = 1
-                                                                                                    // NAME = 2
-                                                                                                    // REPS = 3
-                                                                                                    // WEIGHT = 4
+
     public boolean addOne(Workout workout){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -49,13 +45,9 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
         cv.put(COLUMN_WORKOUT_REPS, workout.getReps());
 
         long insert = db.insert(WORKOUT_TABLE, null, cv);
-        System.out.println(workout);
-        if(insert == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return insert != -1;
     }
+
     public ArrayList<Workout> getEverything(){
         ArrayList<Workout> everything = new ArrayList<>();
         String queryString = "SELECT * FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_WORKOUT_DAYCODE + ">" + 1000;
@@ -70,11 +62,12 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
                 int weight = c.getInt(4);
                 everything.add(new Workout(daycode, name, reps, weight));
             } while (c.moveToNext());
-        } else {
-            System.out.println("SWW: mdbh_workout.getEverything()");
         }
+        c.close();
+        db.close();
         return everything;
     }
+
     public ArrayList<String> getWorkoutNames(int dayCode){
         ArrayList<String> list = new ArrayList<>();
         String queryString = "SELECT * FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode;
@@ -85,17 +78,14 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
                 String name = c.getString(2);
                 if (!list.contains(name)){
                     list.add(name);
-                } else {
-
                 }
             } while (c.moveToNext());
-        } else {
-            System.out.println("SWW mdbh_workout.getWorkoutNames()");
         }
         c.close();
         db.close();
         return list;
     }
+
     public ArrayList<String> getRepsForSet(String workoutName, int dayCode){
         ArrayList<String> list = new ArrayList<>();
         String queryString = "SELECT * FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_WORKOUT_NAME + "=" + "'" + workoutName + "' "+ " AND " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode;
@@ -106,13 +96,12 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
                 String a = String.valueOf(c.getInt(3));
                 list.add(a);
             } while (c.moveToNext());
-        } else {
-            System.out.println("SWW mdbh_workout.getRepsForSet()");
         }
         db.close();
         c.close();
         return list;
     }
+
     public ArrayList<String> getWeightForSet(String workoutName, int dayCode){
         ArrayList<String> list = new ArrayList<>();
         String queryString = "SELECT * FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_WORKOUT_NAME + "=" + "'" + workoutName + "' "+ " AND " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode;
@@ -123,13 +112,12 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
                 String a = String.valueOf(c.getInt(4));
                 list.add(a);
             } while (c.moveToNext());
-        } else {
-            System.out.println("SWW mdbh_workout.getWeightForSet()");
         }
         db.close();
         c.close();
         return list;
     }
+
     public ArrayList<String> getIDsForSet(String workoutName, int dayCode){
         ArrayList<String> list = new ArrayList<>();
         String queryString = "SELECT * FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_WORKOUT_NAME + "=" + "'" + workoutName + "' "+ " AND " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode;
@@ -140,13 +128,12 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
                 String a = String.valueOf(c.getInt(0));
                 list.add(a);
             } while (c.moveToNext());
-        } else {
-            System.out.println("SWW mdbh_workout.getIDsForSet()");
         }
         db.close();
         c.close();
         return list;
     }
+
     public void deleteWorkout(String workoutName, int dayCode) {
         SQLiteDatabase db = this.getWritableDatabase();
         String queryString = "DELETE FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode + " AND " + COLUMN_WORKOUT_NAME + "=" + "'" + workoutName + "'";
@@ -158,6 +145,7 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
         c.close();
         db.close();
     }
+
     public boolean checkIfInitialSet(String workoutName, int dayCode){
         String queryString = "SELECT * FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode + " AND " + COLUMN_WORKOUT_NAME + "=" + "'" + workoutName + "'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -165,68 +153,40 @@ public class MainDatabaseHelper_Workout extends SQLiteOpenHelper {
         if(c.moveToFirst()) {
             do {
                 if(c.getInt(3) == 0 && c.getInt(4) == 0) {
+                    c.close();
                     return true;
                 } else {
+                    c.close();
                     return false;
                 }
             } while (c.moveToNext());
         } else {
-            System.out.println("SWW mdbh_workout.checkIfInitialSet");
+            c.close();
             return false;
         }
-
-
-
     }
+
     public void updateInitialSet(int reps, int weight, String workoutName, int dayCode) {
         String queryString = "UPDATE " + WORKOUT_TABLE + " SET " + COLUMN_WORKOUT_REPS + "=" + reps + ", " + COLUMN_WORKOUT_WEIGHT + "=" + weight + " WHERE " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode + " AND " + COLUMN_WORKOUT_NAME + "=" + "'" + workoutName + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.rawQuery(queryString, null);
         if (c.moveToFirst()) {
             do {
-
             } while (c.moveToNext());
         }
         db.close();
         c.close();
     }
+
     public void deleteSet(int id, int dayCode){
         SQLiteDatabase db = this.getWritableDatabase();
         String queryString = "DELETE FROM " + WORKOUT_TABLE + " WHERE " + COLUMN_ID + "=" + id + " AND " + COLUMN_WORKOUT_DAYCODE + "=" + dayCode;
         Cursor c = db.rawQuery(queryString, null);
         if(c.moveToFirst()) {
             do {
-
             } while (c.moveToNext());
-        } else {
-
         }
         c.close();
         db.close();
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

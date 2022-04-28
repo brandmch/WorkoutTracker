@@ -1,5 +1,7 @@
 package com.example.workouttrackerv5.Workout;
 
+import androidx.annotation.NonNull;
+
 public class Workout {
 
     private int dayCode, reps, weight;
@@ -14,6 +16,7 @@ public class Workout {
     }
 
     // ToSTRING
+    @NonNull
     @Override
     public String toString() {
         return "Workout{" +

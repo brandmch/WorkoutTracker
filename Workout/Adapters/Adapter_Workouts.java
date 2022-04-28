@@ -17,17 +17,17 @@ import java.util.ArrayList;
 
 public class Adapter_Workouts extends RecyclerView.Adapter<Adapter_Workouts.ViewHolder> implements Adapter_Sets.SetRVOnClickListener{
 
-    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
-    private WorkoutRVOnClickListener workoutRVOnClickListener;
-    private MainDatabaseHelper_Workout mdbh;
-    private int dayCode;
-    private balls balls;
+    private final RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private final WorkoutRVOnClickListener workoutRVOnClickListener;
+    private final MainDatabaseHelper_Workout mdbh;
+    private final int dayCode;
+    private final grandSetRVOnClickListener grandSetRVOnClickListener;
 
-    public Adapter_Workouts(MainDatabaseHelper_Workout mdbh, int dayCode, WorkoutRVOnClickListener workoutRVOnClickListener, balls balls) {
+    public Adapter_Workouts(MainDatabaseHelper_Workout mdbh, int dayCode, WorkoutRVOnClickListener workoutRVOnClickListener, grandSetRVOnClickListener grandSetRVOnClickListener) {
         this.mdbh = mdbh;
         this.dayCode = dayCode;
         this.workoutRVOnClickListener = workoutRVOnClickListener;
-        this.balls = balls;
+        this.grandSetRVOnClickListener = grandSetRVOnClickListener;
     }
 
     @NonNull
@@ -57,26 +57,19 @@ public class Adapter_Workouts extends RecyclerView.Adapter<Adapter_Workouts.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        private TextView tv_workoutName;
-        private RecyclerView rv_workouts;
-        private Button btn_addSet;
+        private final TextView tv_workoutName;
+        private final RecyclerView rv_workouts;
         WorkoutRVOnClickListener workoutRVOnClickListener;
         public ViewHolder(@NonNull View itemView, WorkoutRVOnClickListener workoutRVOnClickListener) {
             super(itemView);
             tv_workoutName = itemView.findViewById(R.id.workout_container_tv_workoutName);
             rv_workouts = itemView.findViewById(R.id.workout_container_rv);
-            btn_addSet = itemView.findViewById(R.id.workout_container_btn_addSet);
+            Button btn_addSet = itemView.findViewById(R.id.workout_container_btn_addSet);
             this.workoutRVOnClickListener = workoutRVOnClickListener;
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
-            btn_addSet.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    workoutRVOnClickListener.workoutRVOnClickListener(getAdapterPosition(), dayCode);
-                    System.out.println("Button Clicked");
-                }
-            });
+            btn_addSet.setOnClickListener(view -> workoutRVOnClickListener.workoutRVOnClickListener(getAdapterPosition(), dayCode));
         }
 
         @Override
@@ -98,24 +91,10 @@ public class Adapter_Workouts extends RecyclerView.Adapter<Adapter_Workouts.View
 
     @Override
     public void setRVOnClickListener(int id, int dayCode) {
-        balls.balls(id, dayCode);
+        grandSetRVOnClickListener.grandSetRVOnClickListener(id, dayCode);
     }
 
-    public interface balls {
-        void balls(int id, int dayCode);
+    public interface grandSetRVOnClickListener {
+        void grandSetRVOnClickListener(int id, int dayCode);
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

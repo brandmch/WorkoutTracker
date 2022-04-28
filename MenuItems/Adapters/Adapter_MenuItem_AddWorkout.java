@@ -1,7 +1,6 @@
 package com.example.workouttrackerv5.MenuItems.Adapters;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 
 public class Adapter_MenuItem_AddWorkout extends RecyclerView.Adapter<Adapter_MenuItem_AddWorkout.ViewHolder> {
 
-    private LayoutInflater mlayoutInflater;
+    private final LayoutInflater mlayoutInflater;
     MainDatabaseHelper_Calendar mdbh;
     ArrayList<String> names;
 
@@ -36,8 +35,8 @@ public class Adapter_MenuItem_AddWorkout extends RecyclerView.Adapter<Adapter_Me
 
     @Override
     public void onBindViewHolder(@NonNull Adapter_MenuItem_AddWorkout.ViewHolder holder, int position) {
-        String bruh = names.get(position);
-        holder.tv.setText(bruh);
+        String name = names.get(position);
+        holder.tv.setText(name);
     }
 
     @Override
@@ -45,7 +44,7 @@ public class Adapter_MenuItem_AddWorkout extends RecyclerView.Adapter<Adapter_Me
         return names.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

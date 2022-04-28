@@ -1,7 +1,6 @@
 package com.example.workouttrackerv5.MenuItems;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -24,7 +23,6 @@ public class AddWorkout extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        System.out.println("AddWOrkout.class Started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_item_add_workout);
 
@@ -33,22 +31,17 @@ public class AddWorkout extends AppCompatActivity {
 
         et = findViewById(R.id.editText);
         btn_add = findViewById(R.id.btn_menu_item_add_workout_day);
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String newName = et.getText().toString();
-                System.out.println("WORKOUT NAME = " + newName + "NEXT DAY CODE IS " + mdbh.getNextDayCode());
-                Day newd = new Day(0, newName);
-                mdbh.addOne(newd);
-                System.out.println(mdbh.getEverything());
-                setAdapter();
-            }
+        btn_add.setOnClickListener(view -> {
+            String newName = et.getText().toString();
+            Day newd = new Day(0, newName);
+            mdbh.addOne(newd);
+            setAdapter();
         });
     }
 
     public void setAdapter(){
 
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> names;
         names = mdbh.getWorkoutDayNamesList();
 
         RecyclerView rv_addWorkout = findViewById(R.id.rv_menu_addWorkout);
@@ -57,5 +50,4 @@ public class AddWorkout extends AppCompatActivity {
         rv_addWorkout.setLayoutManager(lm);
         rv_addWorkout.setAdapter(adapt);
     }
-
 }

@@ -1,6 +1,5 @@
 package com.example.workouttrackerv5.Calendar.Adapters;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,8 @@ public class Adapter_CalendarDesignateDayPopup extends RecyclerView.Adapter<Adap
 
     MainDatabaseHelper_Calendar mdbh;
     ArrayList<String> names;
-    private int dayCode;
-    private AddpOnClickListener addpOnClickListener;
+    private final int dayCode;
+    private final AddpOnClickListener addpOnClickListener;
 
     public Adapter_CalendarDesignateDayPopup(MainDatabaseHelper_Calendar mdbh, int dayCode, AddpOnClickListener addpOnClickListener) {
         this.mdbh = mdbh;
@@ -65,28 +64,4 @@ public class Adapter_CalendarDesignateDayPopup extends RecyclerView.Adapter<Adap
     public interface AddpOnClickListener{
         void addpOnClickListener(String workoutName, int dayCode, int position);
     }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -28,8 +28,8 @@ public class MainDatabaseHelper_Calendar extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(createTableStatement);
     }
 
-    @Override                                                                                       // DAYCODE = 1
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {                           // MUSCLEGROUP = 2
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
 
@@ -41,6 +41,7 @@ public class MainDatabaseHelper_Calendar extends SQLiteOpenHelper {
         long insert = db.insert(CALENDAR_TABLE, null, cv);
         return insert != 1;
     }
+
     public ArrayList<Day> getEverything(){
         ArrayList<Day> returnList = new ArrayList<>();
 
@@ -54,13 +55,12 @@ public class MainDatabaseHelper_Calendar extends SQLiteOpenHelper {
                 Day newDay = new Day(daycode, name);
                 returnList.add(newDay);
             } while (c.moveToNext());
-        } else {
-            System.out.println("mdbh_calendar.getEverything() SWW");
         }
         db.close();
         c.close();
         return returnList;
     }
+
     public String getWorkoutDay(int x){
         String workoutDay;
 
@@ -82,6 +82,7 @@ public class MainDatabaseHelper_Calendar extends SQLiteOpenHelper {
         c.close();
         return workoutDay;
     }
+
     public ArrayList<String> getWorkoutDayNamesList(){
         ArrayList<String> names = new ArrayList<>();
 
@@ -92,31 +93,12 @@ public class MainDatabaseHelper_Calendar extends SQLiteOpenHelper {
             do {
                 if (!names.contains(c.getString(2))) {
                     names.add(c.getString(2));
-                } else {
                 }
             } while (c.moveToNext());
-        } else {
         }
         db.close();
         c.close();
         return names;
-    }
-    public int getNextDayCode(){
-        int x = 0;
-        System.out.println("nextdaycode started");
-        String queryString = "SELECT * FROM " + CALENDAR_TABLE + " WHERE " + COLUMN_DAYCODE + "<" + 100;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(queryString, null);
-        if (c.moveToFirst()) {
-            do {
-                if (c.getInt(1) > x) {
-                    x = c.getInt(1);
-                }
-            } while (c.moveToNext());
-        }
-
-        System.out.println("next dayCode is " + x);
-        return x;
     }
 
 }

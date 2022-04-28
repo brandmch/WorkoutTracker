@@ -6,12 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.helper.widget.Layer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerv5.R;
 import com.example.workouttrackerv5.Workout.MainDatabaseHelper_Workout;
-import com.example.workouttrackerv5.Workout.Set;
 
 import java.util.ArrayList;
 
@@ -20,7 +18,7 @@ public class Adapter_Sets extends RecyclerView.Adapter<Adapter_Sets.ViewHolder> 
     MainDatabaseHelper_Workout mdbh;
     String workoutName;
     int dayCode;
-    private SetRVOnClickListener setRVOnClickListener;
+    private final SetRVOnClickListener setRVOnClickListener;
 
     public Adapter_Sets(MainDatabaseHelper_Workout mdbh, String workoutName, int dayCode, SetRVOnClickListener setRVOnClickListener) {
         this.mdbh = mdbh;
@@ -74,6 +72,7 @@ public class Adapter_Sets extends RecyclerView.Adapter<Adapter_Sets.ViewHolder> 
             setRVOnClickListener.setRVOnClickListener(x, dayCode);
         }
     }
+
     public interface SetRVOnClickListener{
         void setRVOnClickListener(int id, int dayCode);
     }
