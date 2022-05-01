@@ -7,4 +7,5 @@ The files found in this repository are up-to-date. Updates to the code will be p
 Last update on Google Play store: March 31, 2022
 
 TO INSTALL MOST RECENT VERSION: 
-
+release>app-release.apk>OPEN IN BROWSER> Download file to phone and open> click INSTALL
+ 
